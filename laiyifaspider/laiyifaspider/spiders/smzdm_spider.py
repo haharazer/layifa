@@ -1,4 +1,7 @@
 import scrapy
+import requests
+import json
+import time
 
 from scrapy import Request
 from laiyifaspider.items import YouhuiItem
@@ -8,37 +11,33 @@ class SmzdmSpider(scrapy.Spider):
     start_urls = ['http://faxian.smzdm.com']
 
     cookies = {
-        "smzdm_user_view": "B5689BF119765F9B7D9B74E787D05B89",
-        "smzdm_user_source": "F03B74888487FC1119C3A92346201048",
-        "__gads": "ID=5854ae4c60ba3d8e:T=1428828331:S=ALNI_MYq7Yt9Ay7qzIFYLx7INAxmfYblCQ",
-        "PHPSESSID": "5s42bvq5s7sjtmgkh35q2d9r72",
-        "_ga": "GA1.2.1732137778.1428828333",
-        "__jsluid": "14cdb53a882c0e5442ed7628159e9fae",
-        "__jsl_clearance": "1428836893.902|0|RHBT4z5dd4p0Oy0bwwT6j1D41dw%3d",
-        "count_i": "1",
-        "Hm_lvt_9b7ac3d38f30fe89ff0b8a0546904e58": "1428828334",
-        "Hm_lpvt_9b7ac3d38f30fe89ff0b8a0546904e58": "1428833305",
-        "AJSTAT_ok_pages": "6",
-        "AJSTAT_ok_times": "1",
-        "_ga": "GA1.3.1732137778.1428828333",
-        "amvid": "c2ae90dfdb6e5207f9d7fde49653f0ff"
+        "__jsluid": "5831b7336acb86e8ebfe7f409be3b97b",
+        "__jsl_clearance": "1429111179.257|0|rtOoffPFrCvcxSCSJEoD1BQfVts%3d"
+    }
+    headers = {
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+        "Accept-Encoding": "gzip, deflate, sdch",
+        "Accept-Language": "zh-CN,zh;q=0.8,en;q=0.6,zh-TW;q=0.4",
+        "Cache-Control": "max-age=0",
+        "Connection": "keep-alive",
+        "Host": "faxian.smzdm.com",
+        "User-Agent": "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.118 Safari/537.36"
     }
 
-    def parse(self, response):
-        item_list = response.xpath("//ul[@class='leftWrap discovery_list']/li[@class='list']")
-        for item in item_list:
+    def get_item(self, response):
+        res = requests.get("http://faxian.smzdm.com/json_more?timesort=" + str(int(time.time())), cookies=self.cookies, headers=self.headers)
+        for item in json.loads(res.text):
             ret = YouhuiItem()
-            ret['img'] = item.xpath("a[@class='picBox']/img/@src").extract()
-            ret['url'] = item.xpath("div[@class='listItem']/h2[@class='itemName']/a/@href").extract()
-            ret['title'] = item.xpath("div[@class='listItem']/h2[@class='itemName']/a/span[@class='black']/text()").extract()
-            ret['content'] = item.xpath("div[@class='listItem']/p/text()").extract()
-            ret['price'] = item.xpath("div[@class='listItem']/h2[@class='itemName']/a/span[@class='red']/text()").extract()
-            ret['mall'] = item.xpath("div[@class='mall']/span[@class='mall_word']/text()").extract()
-            ret['timestamp'] = item.xpath("@timesort").extract()
-            ret['articleid'] = item.xpath("@articleid").extract()
-            ret['link'] = item.xpath("div[@class='listItem']/div[@class='item_buy_mall']/a[@class='directLink']/@href").extract()
+            ret['img'] = item['article_pic_url']
+            ret['url'] = item['article_url']
+            ret['title'] = item['article_title']
+            ret['content'] = item['article_content']
+            ret['price'] = item['article_price']
+            ret['mall'] = item['article_mall']
+            ret['timestamp'] = item['timesort']
+            ret['articleid'] = '001' + item['article_id']
+            ret['link'] = item['article_link']
             yield ret
 
     def start_requests(self):
-        for url in self.start_urls:
-            yield Request(url, cookies=self.cookies)
+        return [Request("http://www.baidu.com", callback=self.get_item)]

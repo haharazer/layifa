@@ -13,8 +13,7 @@
 SPIDER_MODULES = ['laiyifaspider.spiders']
 NEWSPIDER_MODULE = 'laiyifaspider.spiders'
 
-FEED_URI = 'out.txt'
-FEED_FORMAT = 'jsonlines'
-
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.104 Safari/537.36'
+
+ITEM_PIPELINES = ['laiyifaspider.pipelines.MySQLStorePipeline']
