@@ -15,9 +15,9 @@ class MySQLStorePipeline(object):
 
     def __init__(self):
         self.dbpool = adbapi.ConnectionPool('MySQLdb',
-                                            db='laiyifa',
+                                            db='youhui',
                                             user='root',
-                                            passwd='19861023',
+                                            passwd='hp19861023',
                                             cursorclass=MySQLdb.cursors.DictCursor,
                                             charset='utf8',
                                             use_unicode=True,
@@ -34,13 +34,13 @@ class MySQLStorePipeline(object):
     def _conditional_insert(self, tx, item):
         # create record if doesn't exist.
         # all this block run on it's own thread
-        tx.execute("select * from youhui where articleid = %s", (item['articleid'], ))
+        tx.execute("select * from discounts where articleid = %s", (item['articleid'], ))
         result = tx.fetchone()
         if result:
             log.msg("Item already stored in db: %s" % item, level=log.DEBUG)
         else:
             tx.execute(\
-                "insert into youhui (`id`, `url`, `title`, `content`, `price`, `mall`, `timestamp`, `link`, `img`, `articleid`) "
+                "insert into discounts (`id`, `url`, `title`, `content`, `price`, `mall`, `timestamp`, `link`, `img`, `articleid`) "
                 "values (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                 (item['url'],
                  item['title'],
