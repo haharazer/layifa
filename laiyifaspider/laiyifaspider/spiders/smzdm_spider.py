@@ -2,6 +2,7 @@ import scrapy
 import requests
 import json
 import time
+import re
 
 from scrapy import Request
 from laiyifaspider.items import YouhuiItem
@@ -11,8 +12,6 @@ class SmzdmSpider(scrapy.Spider):
     start_urls = ['http://faxian.smzdm.com']
 
     cookies = {
-        "__jsluid": "5831b7336acb86e8ebfe7f409be3b97b",
-        "__jsl_clearance": "1429111179.257|0|rtOoffPFrCvcxSCSJEoD1BQfVts%3d"
     }
     headers = {
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
@@ -25,7 +24,13 @@ class SmzdmSpider(scrapy.Spider):
     }
 
     def get_item(self, response):
-        res = requests.get("http://faxian.smzdm.com/json_more?timesort=" + str(int(time.time())), cookies=self.cookies, headers=self.headers)
+        res = requests.get("http://faxian.smzdm.com/json_more?timesort=" + str(int(time.time())), headers=self.headers)
+        self.cookies['__jsluid'] = res.headers['set-cookie'].split(';')[0].split('=')[1]
+        jsl_clearance = ''
+        for cookie_part in re.findall('push\("([\w\.%\|]+)"\)', res.text):
+            jsl_clearance += cookie_part
+        self.cookies['__jsl_clearance'] = jsl_clearance
+        res = requests.get("http://faxian.smzdm.com/json_more?timesort=" + str(int(time.time())), headers=self.headers, cookies=self.cookies)
         for item in json.loads(res.text):
             ret = YouhuiItem()
             ret['img'] = item['article_pic_url']
