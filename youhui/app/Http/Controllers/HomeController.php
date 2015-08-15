@@ -20,9 +20,12 @@ use DB;
 
 class HomeController extends Controller
 {
-    public static function index()
+    public static function index($page = 1)
     {
-        $items = DB::table('discounts')->take(20)->get();
-        return view('home', ['title' => '标题', 'items'=> $items]);
+        $pageSize = 12;
+        $offset = ($page - 1) * $pageSize;
+        $items = DB::table('discounts')->skip($offset)->take($pageSize)->orderBy('created_at', 'desc')-> get();
+
+        return view('home', ['title' => '主页', 'items'=> $items, 'page' => $page]);
     }
 }

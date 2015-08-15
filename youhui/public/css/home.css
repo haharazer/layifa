@@ -1,0 +1,62 @@
+.goods {
+    width: 248px;
+    height: 470px;
+    margin: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+.itemName {
+    height: 60px;
+    line-height: 20px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    font-size: 14px;
+    padding-left: 0;
+    font-weight: bold;
+}
+
+.black {
+    max-height: 40px;
+    display: block;
+    overflow: hidden;
+}
+
+.red {
+    color: #d62222;
+}
+
+.timeInfo {
+    height: 24px;
+    line-height: 25px;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.time {
+    height: 26px;
+    float: right;
+    text-align: right;
+}
+
+.buy {
+    height: 32px;
+    line-height: 32px;
+}
+
+.link {
+    width: 72px;
+    height: 28px;
+    line-height: 28px;
+    display: inline-block;
+    background-color: #f04848;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    float: right;
+}
+
+.itemContent {
+    height: 80px;
+}

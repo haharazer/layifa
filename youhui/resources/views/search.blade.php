@@ -11,8 +11,7 @@
         }
     </script>
 
-
-    <div class="col-md-9">
+    <div class="col-md-12">
         <div class="row">
             @foreach ($items as $item)
                 <div class="col-sm-6 col-md-4">
@@ -47,14 +46,10 @@
             @if($page == 1)
                 <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Older</a></li>
             @else
-                <li class="previous"><a href="{{ route('home', ['page' => $page - 1]) }}"><span aria-hidden="true">&larr;</span> Older</a></li>
+                <li class="previous"><a href="{{ route('search', ['page' => $page - 1, 'query' => $query]) }}"><span aria-hidden="true">&larr;</span> Older</a></li>
             @endif
-            <li class="next"><a href="{{ route('home', ['page' => $page + 1]) }}">Newer <span aria-hidden="true">&rarr;</span></a></li>
-          </ul>
+            <li class="next"><a href="{{ route('search', ['page' => $page + 1, 'query' => $query]) }}">Newer <span aria-hidden="true">&rarr;</span></a></li>
+            </ul>
         </nav>
-    </div>
-
-    <div class="col-md-3">
-
     </div>
 @endsection
