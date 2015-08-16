@@ -18,21 +18,21 @@
                     <div class="thumbnail" style="height: 470px">
                         <div class="goods">
                             <script>
-                                showImg("{{ $item->img }}");
+                                showImg("{{ $item['img'] }}");
                             </script>
                             <div class="caption">
                                 <h2 class="itemName">
-                                    <a href="{{ $item->url }}" target="_blank">
-                                        <span class="black">{{ $item->title }}</span>
-                                        <span class="red">{{ $item->price }}</span>
+                                    <a href="{{ $item['url'] }}" target="_blank">
+                                        <span class="black">{{ $item['title'] }}</span>
+                                        <span class="red">{{ $item['price'] }}</span>
                                     </a>
                                 </h2>
                                 <div class="timeInfo">
-                                    <span class="time">{{ date('m-d H:i', $item->timestamp) }}</span>
+                                    <span class="time">{{ date('m-d H:i', $item['timestamp']) }}</span>
                                 </div>
-                                <p class="itemContent">{!! $item->content !!}</p>
+                                <p class="itemContent">{!! $item['content'] !!}</p>
                                 <div class="buy">
-                                    <a href="{{ $item->link }}" class="link" target="_blank">原始链接</a>
+                                    <a href="{{ $item['link'] }}" class="link" target="_blank">原始链接</a>
                                 </div>
                             </div>
                         </div>
