@@ -6,7 +6,6 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 from twisted.enterprise import adbapi
-import datetime
 import MySQLdb.cursors
 from scrapy import log
 
@@ -17,13 +16,12 @@ class MySQLStorePipeline(object):
         self.dbpool = adbapi.ConnectionPool('MySQLdb',
                                             db='youhui',
                                             user='root',
-                                            passwd='hp19861023',
+                                            passwd='19861023',
                                             cursorclass=MySQLdb.cursors.DictCursor,
                                             charset='utf8',
                                             use_unicode=True,
                                             host='127.0.0.1',
                                             port=3306)
-
     def process_item(self, item, spider):
         # run db query in thread pool
         query = self.dbpool.runInteraction(self._conditional_insert, item)
@@ -39,9 +37,9 @@ class MySQLStorePipeline(object):
         if result:
             log.msg("Item already stored in db: %s" % item, level=log.DEBUG)
         else:
-            tx.execute(\
-                "insert into discounts (`id`, `url`, `title`, `content`, `price`, `mall`, `timestamp`, `link`, `img`, `articleid`) "
-                "values (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            tx.execute(
+                "insert into discounts (`id`, `url`, `title`, `content`, `price`, `mall`, `timestamp`, `link`, `img`, `articleid`, `category`, `picfile`) "
+                "values (NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                 (item['url'],
                  item['title'],
                  item['content'],
@@ -50,7 +48,10 @@ class MySQLStorePipeline(object):
                  item['timestamp'],
                  item['link'],
                  item['img'],
-                 item['articleid'])
+                 item['articleid'],
+                 item['category'],
+                 item['picfile'],
+                )
             )
             log.msg("Item stored in db: %s" % item, level=log.DEBUG)
 

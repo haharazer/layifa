@@ -19,4 +19,6 @@ class YouhuiItem(scrapy.Item):
     timestamp = scrapy.Field()
     link = scrapy.Field()
     articleid = scrapy.Field()
+    category = scrapy.Field()
+    picfile = scrapy.Field()
     pass

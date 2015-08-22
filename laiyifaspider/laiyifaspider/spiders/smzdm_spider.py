@@ -1,3 +1,4 @@
+#coding=utf-8
 import scrapy
 import requests
 import json
@@ -6,6 +7,9 @@ import re
 
 from scrapy import Request
 from laiyifaspider.items import YouhuiItem
+
+import urllib
+from hashlib import md5
 
 class SmzdmSpider(scrapy.Spider):
     name = "smzdm"
@@ -22,6 +26,7 @@ class SmzdmSpider(scrapy.Spider):
         "Host": "faxian.smzdm.com",
         "User-Agent": "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.118 Safari/537.36"
     }
+    picdir = '/home/han/project/laiyifa/laiyifaspider/pics/'
 
     def get_item(self, response):
         res = requests.get("http://faxian.smzdm.com/json_more?timesort=" + str(int(time.time())), headers=self.headers)
@@ -32,6 +37,14 @@ class SmzdmSpider(scrapy.Spider):
         self.cookies['__jsl_clearance'] = jsl_clearance
         res = requests.get("http://faxian.smzdm.com/json_more?timesort=" + str(int(time.time())), headers=self.headers, cookies=self.cookies)
         for item in json.loads(res.text):
+            #下载图片
+            img = item['article_pic_url']
+            m = md5()
+            m.update(img)
+            postfix = img.split('.')[-1]
+            filename = m.hexdigest()  + '.' + postfix
+            urllib.urlretrieve(img, self.picdir + filename)
+
             ret = YouhuiItem()
             ret['img'] = item['article_pic_url']
             ret['url'] = item['article_url']
@@ -42,6 +55,8 @@ class SmzdmSpider(scrapy.Spider):
             ret['timestamp'] = item['timesort']
             ret['articleid'] = '001' + item['article_id']
             ret['link'] = item['article_link']
+            ret['category'] = item['article_top_category']
+            ret['picfile'] = filename
             yield ret
 
     def start_requests(self):
