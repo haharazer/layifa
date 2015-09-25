@@ -18,7 +18,7 @@ class SearchController extends Controller {
     {
         $query = $request->input('query');
         $page = $request->input('page', 1);
-        $pageSize = 12;
+        $pageSize = 16;
         $offset = ($page - 1) * $pageSize;
 
         $params = array();
@@ -31,13 +31,23 @@ class SearchController extends Controller {
         $searchParams['body'] = array(
             'query' => array(
                 'match' => array(
-                    'title' => $query,
+                    'title' => array(
+                        'query' => $query,
+                        'minimum_should_match' => '75%',
+                    )
                 ),
             ),
+            'sort' => array(
+                'created_at' => array(
+                    'order' => 'desc',
+                ),
+            ),
+            'from' => $offset,
+            'size' => $pageSize,
         );
         $results = $client->search($searchParams);
         $items = array_map(function($item) {
-            return $item['_source'];
+            return (object)$item['_source'];
         }, $results['hits']['hits']);
 
         return view('search', ['title' => '搜索', 'items'=> $items, 'page' => $page, 'query' => $query]);

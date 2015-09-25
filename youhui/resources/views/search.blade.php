@@ -11,45 +11,41 @@
         }
     </script>
 
-    <div class="col-md-12">
-        <div class="row">
-            @foreach ($items as $item)
-                <div class="col-sm-6 col-md-4">
-                    <div class="thumbnail" style="height: 470px">
-                        <div class="goods">
-                            <script>
-                                showImg("{{ $item['img'] }}");
-                            </script>
+     <div class="col-md-12 container-fluid">
+            <div class="row">
+                @foreach ($items as $item)
+                    <div class="col-xs-12 col-sm-4 col-md-3">
+                        <div class="thumbnail" style="height: 320px">
+                            <div  class="pic">
+                                <a href="{{ $item->url }}" target="_blank">
+                                    <img src="http://106.185.25.253:8000/pics/{{ $item->picfile }}">
+                                </a>
+                            </div>
                             <div class="caption">
                                 <h2 class="itemName">
-                                    <a href="{{ $item['url'] }}" target="_blank">
-                                        <span class="black">{{ $item['title'] }}</span>
-                                        <span class="red">{{ $item['price'] }}</span>
+                                    <a href="{{ $item->url }}" target="_blank">
+                                        <span class="black">{{ $item->title }}</span>
+                                        <span class="red">{{ $item->price }}</span>
                                     </a>
                                 </h2>
                                 <div class="timeInfo">
-                                    <span class="time">{{ date('m-d H:i', $item['timestamp']) }}</span>
-                                </div>
-                                <p class="itemContent">{!! $item['content'] !!}</p>
-                                <div class="buy">
-                                    <a href="{{ $item['link'] }}" class="link" target="_blank">原始链接</a>
+                                    <span class="time">{{ date('m-d H:i', $item->timestamp) }}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
-        </div>
+                @endforeach
+            </div>
 
-        <nav>
-            <ul class="pager">
-            @if($page == 1)
-                <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Older</a></li>
-            @else
-                <li class="previous"><a href="{{ route('search', ['page' => $page - 1, 'query' => $query]) }}"><span aria-hidden="true">&larr;</span> Older</a></li>
-            @endif
-            <li class="next"><a href="{{ route('search', ['page' => $page + 1, 'query' => $query]) }}">Newer <span aria-hidden="true">&rarr;</span></a></li>
-            </ul>
-        </nav>
+            <nav>
+                <ul class="pager">
+                @if($page == 1)
+                    <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Older</a></li>
+                @else
+                    <li class="previous"><a href="{{ route('search', ['page' => $page - 1, 'query' => $query]) }}"><span aria-hidden="true">&larr;</span> Older</a></li>
+                @endif
+                <li class="next"><a href="{{ route('search', ['page' => $page + 1, 'query' => $query]) }}">Newer <span aria-hidden="true">&rarr;</span></a></li>
+              </ul>
+            </nav>
     </div>
 @endsection
