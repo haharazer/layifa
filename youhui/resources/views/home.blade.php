@@ -38,11 +38,11 @@
         <nav>
             <ul class="pager">
             @if($page == 1)
-                <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Older</a></li>
+                <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Newer</a></li>
             @else
-                <li class="previous"><a href="{{ route('home', ['page' => $page - 1]) }}"><span aria-hidden="true">&larr;</span> Older</a></li>
+                <li class="previous"><a href="{{ route('home', ['page' => $page - 1]) }}"><span aria-hidden="true">&larr;</span> Newer</a></li>
             @endif
-            <li class="next"><a href="{{ route('home', ['page' => $page + 1]) }}">Newer <span aria-hidden="true">&rarr;</span></a></li>
+            <li class="next"><a href="{{ route('home', ['page' => $page + 1]) }}">Older <span aria-hidden="true">&rarr;</span></a></li>
           </ul>
         </nav>
     </div>

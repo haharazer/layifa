@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>{{ isset($title)?:"来一发" }}</title>
+    <title>{{ isset($title)?$title:"来一发" }}</title>
     <!-- 新 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{asset('/css/footer.css')}}">
@@ -27,16 +27,16 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Brand</a>
+                    <a class="navbar-brand" href="{{ route('home') }}">来一发~</a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <p class="navbar-text">一段文本</p>
+                    <p class="navbar-text">一个神奇的网站</p>
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">首页</a></li>
-                        <li><a href="#">最新</a></li>
+                        <li class="active"><a href="{{ route('home') }}">首页</a></li>
+                        <li><a href="{{ route('home') }}">最新</a></li>
                     </ul>
-                    <form class="navbar-form navbar-right" role="search" method="get" action="/search">
+                    <form class="navbar-form navbar-left" role="search" method="get" action="/search">
                         <div class="form-group">
                         @if(isset($query))
                             <input name="query" type="text" class="form-control" placeholder="Search" value="{{ $query }}">

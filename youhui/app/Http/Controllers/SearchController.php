@@ -21,27 +21,24 @@ class SearchController extends Controller {
         $pageSize = 16;
         $offset = ($page - 1) * $pageSize;
 
-        $params = array();
-        $params['hosts'] = array('106.185.25.253:9200');
-        $client = new Elasticsearch\Client($params);
+        $hosts = array('127.0.0.1:9200');
+        $client = Elasticsearch\ClientBuilder::create()->setHosts($hosts)->build();
         $searchParams = array(
             'index' => 'youhui',
-            'type' => 'jdbc',
+            'type' => 'discounts',
+            'analyzer' => 'ik',
         );
         $searchParams['body'] = array(
             'query' => array(
                 'match' => array(
-                    'title' => array(
-                        'query' => $query,
-                        'minimum_should_match' => '75%',
-                    )
+                    'title' => $query,
                 ),
             ),
-            'sort' => array(
-                'created_at' => array(
-                    'order' => 'desc',
-                ),
-            ),
+//            'sort' => array(
+//                'created_at' => array(
+//                    'order' => 'desc',
+//                ),
+//            ),
             'from' => $offset,
             'size' => $pageSize,
         );
