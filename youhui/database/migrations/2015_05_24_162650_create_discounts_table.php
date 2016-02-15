@@ -23,7 +23,9 @@ class CreateDiscountsTable extends Migration
             $table->string('link', 1023);
             $table->string('img', 1023);
             $table->integer('articleid');
-            $table->timestamps();
+
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 
             $table->unique('articleid');
         });

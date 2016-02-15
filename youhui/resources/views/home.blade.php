@@ -16,7 +16,7 @@
                     <div class="thumbnail" style="height: 320px">
                         <div  class="pic">
                             <a href="{{ $item->url }}" target="_blank">
-                                <img src="http://106.185.25.253:8000/pics/{{ $item->picfile }}">
+                                <img src="/pics/{{ $item->picfile }}">
                             </a>
                         </div>
                         <div class="caption">
