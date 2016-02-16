@@ -26,7 +26,7 @@ class SmzdmSpider(scrapy.Spider):
         "Host": "faxian.smzdm.com",
         "User-Agent": "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.118 Safari/537.36"
     }
-    picdir = '/home/han/project/laiyifa/laiyifaspider/pics/'
+    picdir = './pics/'
 
     def get_item(self, response):
         res = requests.get("http://faxian.smzdm.com/json_more?timesort=" + str(int(time.time())), headers=self.headers)
