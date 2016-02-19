@@ -22,6 +22,8 @@ class CreateDiscountsTable extends Migration
             $table->unsignedBigInteger('timestamp');
             $table->string('link', 1023);
             $table->string('img', 1023);
+            $table->string('category', 20);
+            $table->string('picfile', 1023);
             $table->integer('articleid');
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
