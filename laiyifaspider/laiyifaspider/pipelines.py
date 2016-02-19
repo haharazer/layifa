@@ -16,7 +16,7 @@ class MySQLStorePipeline(object):
         self.dbpool = adbapi.ConnectionPool('MySQLdb',
                                             db='youhui',
                                             user='root',
-                                            passwd='19861023',
+                                            passwd='123456',
                                             cursorclass=MySQLdb.cursors.DictCursor,
                                             charset='utf8',
                                             use_unicode=True,
