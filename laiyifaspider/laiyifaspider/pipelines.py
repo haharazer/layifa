@@ -20,7 +20,7 @@ class MySQLStorePipeline(object):
                                             cursorclass=MySQLdb.cursors.DictCursor,
                                             charset='utf8',
                                             use_unicode=True,
-                                            host='db',
+                                            host='mysql',
                                             port=3306)
     def process_item(self, item, spider):
         # run db query in thread pool
