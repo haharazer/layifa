@@ -1,4 +1,4 @@
-#coding=utf-8
+# -*- coding: utf-8 -*-
 import scrapy
 import requests
 import json
@@ -37,27 +37,29 @@ class SmzdmSpider(scrapy.Spider):
         self.cookies['__jsl_clearance'] = jsl_clearance
         res = requests.get("http://faxian.smzdm.com/json_more?timesort=" + str(int(time.time())), headers=self.headers, cookies=self.cookies)
         for item in json.loads(res.text):
-            #下载图片
-            img = item['article_pic_url']
-            m = md5()
-            m.update(img)
-            postfix = img.split('.')[-1]
-            filename = m.hexdigest()  + '.' + postfix
-            urllib.urlretrieve(img, self.picdir + filename)
-
             ret = YouhuiItem()
-            ret['img'] = item['article_pic_url']
+            ret['ori_pic_url'] = item['article_pic_url']
             ret['url'] = item['article_url']
             ret['title'] = item['article_title']
             ret['content'] = item['article_content']
             ret['price'] = item['article_price']
             ret['mall'] = item['article_mall']
-            ret['timestamp'] = item['timesort']
-            ret['articleid'] = '001' + item['article_id']
-            ret['link'] = item['article_link']
+            ret['timestamp'] = str(item['timesort'])
+            ret['article_id'] = '001' + item['article_id']
+            ret['ori_url'] = item['article_link']
             ret['category'] = item['article_top_category']
-            ret['picfile'] = filename
+            ret['source'] = u'smzdm'
+            ret['file_urls'] = [ret['ori_pic_url']]
+            def pic_name_generator(url):
+                postfix = url.split('.')[-1]
+                pic_name = md5(url).hexdigest()  + '.' + postfix
+                return { 'bucket': 'laiyifapic', 'key':pic_name }
+            ret['qiniu_key_generator'] = pic_name_generator
             yield ret
 
     def start_requests(self):
         return [Request("http://www.baidu.com", callback=self.get_item)]
+
+
+
+

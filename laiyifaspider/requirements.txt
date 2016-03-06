@@ -1,0 +1,7 @@
+cssselect
+w3lib
+Scrapy
+requests
+MySQL-python
+qiniu
+scrapy-qiniu
