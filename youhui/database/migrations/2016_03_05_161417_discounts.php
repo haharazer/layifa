@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDiscountsTable extends Migration
+class Discounts extends Migration
 {
     /**
      * Run the migrations.
@@ -20,16 +20,17 @@ class CreateDiscountsTable extends Migration
             $table->string('price', 1023);
             $table->string('mall', 1023);
             $table->unsignedBigInteger('timestamp');
-            $table->string('link', 1023);
-            $table->string('img', 1023);
+            $table->string('ori_url', 1023);
+            $table->string('ori_pic_url', 1023);
             $table->string('category', 20);
-            $table->string('picfile', 1023);
-            $table->integer('articleid');
+            $table->string('pic_url', 1023);
+            $table->string('source', 20);
+            $table->integer('article_id');
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 
-            $table->unique('articleid');
+            $table->unique('article_id');
         });
     }
 
@@ -40,6 +41,6 @@ class CreateDiscountsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('discounts');
+        //
     }
 }
