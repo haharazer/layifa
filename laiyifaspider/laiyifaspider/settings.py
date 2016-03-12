@@ -10,6 +10,8 @@
 
 # BOT_NAME = 'laiyifaspider'
 
+DOWNLOAD_DELAY = 1
+
 SPIDER_MODULES = ['laiyifaspider.spiders']
 NEWSPIDER_MODULE = 'laiyifaspider.spiders'
 

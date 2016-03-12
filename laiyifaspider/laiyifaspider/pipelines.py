@@ -35,14 +35,24 @@ class MySQLStorePipeline(object):
             sql = "select * from discounts where article_id = %s"
             cursor.execute(sql, (item['article_id'],))
             result = cursor.fetchone()
-            if result:
+            if result and int(result['tag_id']) == 0:
+                #look up tag_id
+                cursor.execute("select * from tags where tag = %s", (item['tag'],))
+                tag_res = cursor.fetchone()
+                if tag_res:
+                    tag_id = tag_res['id']
+                else:
+                    cursor.execute("INSERT INTO `tags` (`id`, `tag`, `tags`) values (NULL, %s, %s)", (item['tag'], item['tags'],))
+                    self.connection.commit()
+                    tag_id = cursor.lastrowid
                 cursor.execute(
-                        "UPDATE `discounts` SET `tags` = %s, `tag` = %s WHERE `discounts`.`article_id` = %s; ", (
-                             item['tags'],
-                             item['tag'],
-                             item['article_id'],
+                            "UPDATE `discounts` SET `tags` = %s, `tag` = %s, `tag_id` = %s WHERE `discounts`.`article_id` = %s; ", (
+                                 item['tags'],
+                                 item['tag'],
+                                 tag_id,
+                                 item['article_id'],
+                            )
                         )
-                    )
                 self.connection.commit()
             else:
                 raise DropItem("not found discount when add tag %s" % item)
