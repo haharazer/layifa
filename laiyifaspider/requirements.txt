@@ -2,6 +2,6 @@ cssselect
 w3lib
 Scrapy
 requests
-MySQL-python
+PyMySQL
 qiniu
 scrapy-qiniu

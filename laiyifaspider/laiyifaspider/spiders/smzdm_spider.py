@@ -6,9 +6,8 @@ import time
 import re
 
 from scrapy import Request
-from laiyifaspider.items import YouhuiItem
+from laiyifaspider.items import YouhuiItem, TagItem
 
-import urllib
 from hashlib import md5
 
 class SmzdmSpider(scrapy.Spider):
@@ -26,7 +25,6 @@ class SmzdmSpider(scrapy.Spider):
         "Host": "faxian.smzdm.com",
         "User-Agent": "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.118 Safari/537.36"
     }
-    picdir = './pics/'
 
     def get_item(self, response):
         res = requests.get("http://faxian.smzdm.com/json_more?timesort=" + str(int(time.time())), headers=self.headers)
@@ -56,6 +54,19 @@ class SmzdmSpider(scrapy.Spider):
                 return { 'bucket': 'laiyifapic', 'key':pic_name }
             ret['qiniu_key_generator'] = pic_name_generator
             yield ret
+            yield scrapy.Request(ret['url'], self.parse_detail)
+
+    def parse_detail(self, response):
+        tag_divs = response.xpath("//div[@class='crumbsCate']")
+        tags = []
+        for div in tag_divs:
+            tags.append(div.xpath("./a/span/text()").extract()[0])
+        tags = tags[1:]
+        item = TagItem()
+        item['article_id'] = '001' + response.url.split('/')[-2]
+        item['tags'] = ','.join(tags)
+        item['tag'] = tags[-1]
+        yield item
 
     def start_requests(self):
         return [Request("http://www.baidu.com", callback=self.get_item)]

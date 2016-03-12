@@ -27,3 +27,8 @@ class YouhuiItem(scrapy.Item):
     files = scrapy.Field()
     qiniu_key_generator = scrapy.Field()
     pass
+
+class TagItem(scrapy.Item):
+    article_id = scrapy.Field()
+    tag = scrapy.Field()
+    tags = scrapy.Field()
