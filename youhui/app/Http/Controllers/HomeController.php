@@ -15,17 +15,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use DB;
 
 class HomeController extends Controller
 {
-    public static function index($page = 1)
+    public static function index()
     {
-        $pageSize = 12;
-        $offset = ($page - 1) * $pageSize;
-        $items = DB::table('discounts')->skip($offset)->take($pageSize)->orderBy('created_at', 'desc')-> get();
+        $items = DB::table('discounts')
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
 
-        return view('home', ['title' => '主页', 'items'=> $items, 'page' => $page]);
+        return view('home', ['title' => '主页', 'items'=> $items]);
     }
 }

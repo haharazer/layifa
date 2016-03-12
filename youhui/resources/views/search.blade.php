@@ -11,7 +11,7 @@
                         <div class="thumbnail" style="height: 320px">
                             <div class="pic">
                                 <a href="{{ $item->url }}" target="_blank">
-                                    <img src="http://106.185.25.253:8000/pics/{{ $item->picfile }}">
+                                    <img src="http://{{env('PIC_HOST')}}/{{ $item->pic_url }}">
                                 </a>
                             </div>
                             <div class="caption">
@@ -32,17 +32,7 @@
             </div>
 
             <nav>
-                <ul class="pager">
-                    @if($page == 1)
-                        <li class="previous disabled"><a href="#"><span aria-hidden="true">&larr;</span> Newer</a></li>
-                    @else
-                        <li class="previous"><a
-                                    href="{{ route('search', ['page' => $page - 1, 'query' => $query]) }}"><span
-                                        aria-hidden="true">&larr;</span> Newer</a></li>
-                    @endif
-                    <li class="next"><a href="{{ route('search', ['page' => $page + 1, 'query' => $query]) }}">Older
-                            <span aria-hidden="true">&rarr;</span></a></li>
-                </ul>
+                <?php echo $items->appends(['query' => $query])->render(); ?>
             </nav>
         @else
             <div class="jumbotron">

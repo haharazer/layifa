@@ -17,16 +17,17 @@ Route::get('/search',
     ]
 );
 
-Route::get('/{page?}',
+Route::get('/',
            [
                'as' => 'home', 'uses' => 'HomeController@index'
            ]
-)->where(['page' => '[0-9]+']);
+);
 
-Route::get('/home',
-    [
-        'uses' => 'HomeController@index'
-    ]
+Route::group(['middleware' => ['auth']], function(){
+        Route::get('/my/subscribe',[
+            'uses' => 'MyController@subscribe',
+        ]);
+    }
 );
 
 // Authentication routes...

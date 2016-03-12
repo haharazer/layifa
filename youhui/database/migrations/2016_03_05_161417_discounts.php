@@ -26,6 +26,9 @@ class Discounts extends Migration
             $table->string('pic_url', 1023);
             $table->string('source', 20);
             $table->integer('article_id');
+            $table->string('tags', 1000);
+            $table->integer('tag_id');
+            $table->string('tag', 10);
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));

@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use Elasticsearch;
@@ -17,36 +16,12 @@ class SearchController extends Controller {
     public static function index(Request $request)
     {
         $query = $request->input('query');
-        $page = $request->input('page', 1);
-        $pageSize = 16;
-        $offset = ($page - 1) * $pageSize;
 
-        $hosts = array('127.0.0.1:9200');
-        $client = Elasticsearch\ClientBuilder::create()->setHosts($hosts)->build();
-        $searchParams = array(
-            'index' => 'youhui',
-            'type' => 'discounts',
-            'analyzer' => 'ik',
-        );
-        $searchParams['body'] = array(
-            'query' => array(
-                'match' => array(
-                    'title' => $query,
-                ),
-            ),
-//            'sort' => array(
-//                'created_at' => array(
-//                    'order' => 'desc',
-//                ),
-//            ),
-            'from' => $offset,
-            'size' => $pageSize,
-        );
-        $results = $client->search($searchParams);
-        $items = array_map(function($item) {
-            return (object)$item['_source'];
-        }, $results['hits']['hits']);
+        $items = DB::table('discounts')
+            ->where('tag', 'like', "%$query%")
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
 
-        return view('search', ['title' => '搜索', 'items'=> $items, 'page' => $page, 'query' => $query]);
+        return view('search', ['title' => '搜索', 'items'=> $items, 'query' => $query]);
     }
 } 
